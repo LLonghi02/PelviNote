@@ -20,7 +20,7 @@ Nessun server, nessun account: tutto funziona nel browser e i dati vengono salva
 
 ## Come usarla
 
-1. Apri il file `index.html` in un browser (oppure ospita la cartella su un servizio statico come GitHub Pages).
+1. Apri https://pelvinote.altervista.org/
 2. Tocca il pulsante corrispondente ogni volta che si verifica un evento.
 3. Consulta le statistiche del giorno e il registro cronologico in tempo reale.
 4. Usa "Esporta PDF" per generare un report stampabile, o "Svuota" per azzerare il diario.
