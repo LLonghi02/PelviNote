@@ -1,0 +1,594 @@
+<html lang="it"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diario</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+<meta name="theme-color" content="#C83253">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Diario">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --rose-50: #FFF1F3;
+    --rose-100: #FFD6DC;
+    --rose-200: #FFADB9;
+    --rose-400: #F47088;
+    --rose-600: #C83253;
+    --rose-800: #8B1530;
+    --red-50: #FFF0EE;
+    --red-100: #FFCDC7;
+    --red-400: #EF5B47;
+    --red-600: #C0321C;
+    --red-800: #841E0E;
+    --blush: #FDF4F5;
+    --cream: #FFFAF8;
+    --surface: #FFFFFF;
+    --border: rgba(180,60,80,0.10);
+    --border-strong: rgba(180,60,80,0.18);
+    --text: #1C0A0E;
+    --muted: #9B6272;
+    --radius: 16px;
+    --radius-sm: 10px;
+    --shadow-rose: 0 2px 16px rgba(200,50,83,0.13);
+    --shadow-red: 0 2px 16px rgba(192,50,28,0.13);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  .app {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 36px 20px 60px;
+  }
+
+  header {
+    margin-bottom: 36px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+
+  .logo-mark {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow-rose);
+  }
+
+  .logo-mark img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 32px;
+    color: var(--rose-600);
+    letter-spacing: -0.5px;
+    line-height: 1;
+  }
+
+  .date-today {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 400;
+    text-transform: capitalize;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--border-strong);
+    margin: 24px 0;
+  }
+
+  .btn-row {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .btn-row-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .btn-row-2 { grid-template-columns: 1fr 1fr; margin-bottom: 20px; }
+
+  .btn-full { grid-column: 1 / -1; }
+
+  .btn {
+    border: 1.5px solid transparent;
+    border-radius: var(--radius);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 18px 10px 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    transition: transform 0.13s, box-shadow 0.13s;
+    -webkit-tap-highlight-color: transparent;
+    letter-spacing: 0.01em;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  .btn:active { transform: scale(0.95); }
+
+  .btn-icon {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.55;
+    margin-bottom: 2px;
+  }
+
+  .btn-tanta {
+    background: var(--rose-50);
+    color: var(--rose-800);
+    border-color: var(--rose-100);
+    box-shadow: var(--shadow-rose);
+  }
+  .btn-tanta:hover { box-shadow: 0 4px 22px rgba(200,50,83,0.22); }
+
+  .btn-poca {
+    background: #FFF8FA;
+    color: var(--rose-600);
+    border-color: var(--rose-100);
+    box-shadow: 0 2px 12px rgba(200,50,83,0.08);
+  }
+  .btn-poca:hover { box-shadow: 0 4px 20px rgba(200,50,83,0.16); }
+
+  .btn-stimolo {
+    background: #FFF6F2;
+    color: #7A3010;
+    border-color: #FFCFBB;
+    box-shadow: 0 2px 14px rgba(192,50,28,0.10);
+  }
+  .btn-stimolo:hover { box-shadow: 0 4px 22px rgba(192,50,28,0.18); }
+
+  .btn-bruciore {
+    background: var(--red-50);
+    color: var(--red-800);
+    border-color: var(--red-100);
+    box-shadow: var(--shadow-red);
+  }
+  .btn-bruciore:hover { box-shadow: 0 4px 22px rgba(192,50,28,0.22); }
+
+  .btn-cacca {
+    background: #FDF6EE;
+    color: #6B3A10;
+    border-color: #F0D4B0;
+    box-shadow: 0 2px 14px rgba(107,58,16,0.10);
+  }
+  .btn-cacca:hover { box-shadow: 0 4px 22px rgba(107,58,16,0.18); }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 8px;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-size: 22px;
+    font-weight: 600;
+    font-family: 'DM Mono', monospace;
+    line-height: 1;
+  }
+
+  .stat-tanta .stat-num, .stat-poca .stat-num { color: var(--rose-600); }
+  .stat-stimolo .stat-num { color: #A0460E; }
+  .stat-bruciore .stat-num { color: var(--red-600); }
+  .stat-cacca .stat-num { color: #6B3A10; }
+
+  .stat-label {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 4px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    line-height: 1.3;
+  }
+
+  .toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .log-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.10em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .toolbar-actions {
+    display: flex;
+    gap: 6px;
+  }
+
+  .tool-btn {
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: 7px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: var(--muted);
+    padding: 5px 11px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .tool-btn:hover { background: var(--rose-50); color: var(--rose-600); border-color: var(--rose-200); }
+
+  .empty {
+    text-align: center;
+    color: var(--muted);
+    font-size: 14px;
+    padding: 40px 0;
+    line-height: 1.8;
+  }
+
+  .date-sep {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--rose-400);
+    margin: 20px 0 8px;
+  }
+
+  .date-sep:first-child { margin-top: 0; }
+
+  .entry {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+    animation: fadeUp 0.18s ease;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 99px;
+    flex-shrink: 0;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .badge-tanta    { background: var(--rose-100); color: var(--rose-800); }
+  .badge-poca     { background: #FFE8EE; color: var(--rose-600); }
+  .badge-stimolo  { background: #FFE8DA; color: #7A3010; }
+  .badge-bruciore { background: var(--red-100); color: var(--red-800); }
+  .badge-cacca    { background: #F0D4B0; color: #6B3A10; }
+
+  .entry-time {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    min-width: 62px;
+  }
+
+  .entry-ago {
+    font-size: 12px;
+    color: var(--muted);
+    margin-left: auto;
+    font-family: 'DM Mono', monospace;
+    white-space: nowrap;
+  }
+
+  .entry-delete {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--muted);
+    font-size: 15px;
+    padding: 2px 5px;
+    border-radius: 4px;
+    opacity: 0.4;
+    transition: opacity 0.15s;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+
+  .entry-delete:hover { opacity: 1; color: var(--red-600); }
+
+  @media print {
+    body { background: #fff; }
+
+    .app { max-width: 100%; padding: 20px; }
+
+    .btn-row,
+    .toolbar-actions,
+    .entry-delete { display: none !important; }
+
+    .stats { page-break-after: always; }
+
+    header { margin-bottom: 16px; }
+
+    .logo { color: #C83253; }
+
+    .logo-mark { box-shadow: none; }
+
+    .entry {
+      animation: none;
+      break-inside: avoid;
+      border-color: #eee;
+    }
+
+    .date-sep { color: #C83253; }
+
+    .tool-btn.pdf-btn { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="brand">
+      <div class="logo-mark" aria-hidden="true">
+        <img src="assets/logo.png" alt="">
+      </div>
+      <div class="logo">Diario</div>
+    </div>
+    <div class="date-today" id="date-today">lunedì 25 maggio 2026</div>
+  </header>
+
+  <div class="btn-row btn-row-3">
+    <button class="btn btn-tanta" onclick="logEvent('tanta')">
+      <span class="btn-icon">Pipì</span>
+      Pipì
+    </button>
+    <button class="btn btn-poca" onclick="logEvent('poca')">
+      <span class="btn-icon">Poco</span>
+      Poca pipì
+    </button>
+    <button class="btn btn-cacca" onclick="logEvent('cacca')">
+      <span class="btn-icon">Cacca</span>
+      Bagno
+    </button>
+  </div>
+  <div class="btn-row btn-row-2">
+    <button class="btn btn-stimolo" onclick="logEvent('stimolo')">
+      <span class="btn-icon">Urgenza</span>
+      Stimolo
+    </button>
+    <button class="btn btn-bruciore" onclick="logEvent('bruciore')">
+      <span class="btn-icon">Dolore</span>
+      Bruciore
+    </button>
+  </div>
+
+  <div class="stats">
+    <div class="stat-card stat-tanta">
+      <div class="stat-num" id="count-tanta">0</div>
+      <div class="stat-label">Tanta<br>oggi</div>
+    </div>
+    <div class="stat-card stat-poca">
+      <div class="stat-num" id="count-poca">0</div>
+      <div class="stat-label">Poca<br>oggi</div>
+    </div>
+    <div class="stat-card stat-stimolo">
+      <div class="stat-num" id="count-stimolo">0</div>
+      <div class="stat-label">Stimoli<br>oggi</div>
+    </div>
+    <div class="stat-card stat-bruciore">
+      <div class="stat-num" id="count-bruciore">0</div>
+      <div class="stat-label">Bruc.<br>oggi</div>
+    </div>
+    <div class="stat-card stat-cacca">
+      <div class="stat-num" id="count-cacca">0</div>
+      <div class="stat-label">Cacca<br>oggi</div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <span class="log-title">Registro</span>
+    <div class="toolbar-actions">
+      <button class="tool-btn" onclick="exportPDF()">Esporta PDF</button>
+      <button class="tool-btn" onclick="clearAll()">Svuota</button>
+    </div>
+  </div>
+
+  <div id="log"><div class="date-sep">domenica 3 maggio</div><div class="entry"><span class="badge badge-poca">Poca pipì</span><span class="entry-time">14:35:52</span><span class="entry-ago">+0s</span><button class="entry-delete" onclick="deleteEntry('1777811752887_0.20205215175082503')" title="Elimina">×</button></div><div class="entry"><span class="badge badge-tanta">Pipì</span><span class="entry-time">14:35:52</span><span class="entry-ago">inizio</span><button class="entry-delete" onclick="deleteEntry('1777811752270_0.596256684627517')" title="Elimina">×</button></div></div>
+</div>
+
+<script>
+  let entries = [];
+  try { entries = JSON.parse(localStorage.getItem('diario_v3') || '[]'); } catch(e) {}
+
+  const LABELS = {
+    tanta:    'Pipì',
+    poca:     'Poca pipì',
+    stimolo:  'Stimolo',
+    bruciore: 'Bruciore',
+    cacca:    'Bagno'
+  };
+
+  const BADGE = {
+    tanta:    'badge-tanta',
+    poca:     'badge-poca',
+    stimolo:  'badge-stimolo',
+    bruciore: 'badge-bruciore',
+    cacca:    'badge-cacca'
+  };
+
+  function pad(n){ return String(n).padStart(2,'0'); }
+
+  function fmtTime(ts){
+    const d = new Date(ts);
+    return pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());
+  }
+
+  function dateKey(ts){
+    const d = new Date(ts);
+    return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+  }
+
+  function fmtDateLabel(ts){
+    const d = new Date(ts);
+    const today = new Date();
+    const yest = new Date(); yest.setDate(today.getDate()-1);
+    if(d.toDateString()===today.toDateString()) return 'Oggi';
+    if(d.toDateString()===yest.toDateString()) return 'Ieri';
+    return d.toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long'});
+  }
+
+  function fmtInterval(ms){
+    if(ms === null) return 'inizio';
+
+    const seconds = Math.max(0, Math.floor(ms / 1000));
+    if(seconds < 60) return '+' + seconds + 's';
+
+    const minutes = Math.floor(seconds / 60);
+    if(minutes < 60) return '+' + minutes + 'min';
+
+    const hours = Math.floor(minutes / 60);
+    if(hours < 24) {
+      const restMinutes = minutes % 60;
+      return '+' + hours + 'h' + (restMinutes ? ' ' + restMinutes + 'min' : '');
+    }
+
+    const days = Math.floor(hours / 24);
+    const restHours = hours % 24;
+    return '+' + days + 'g' + (restHours ? ' ' + restHours + 'h' : '');
+  }
+
+  function save(){
+    try{ localStorage.setItem('diario_v3', JSON.stringify(entries)); }catch(e){}
+  }
+
+  function logEvent(type){
+    const now = Date.now();
+    entries.unshift({
+      id: now + '_' + Math.random(),
+      type,
+      ts: now
+    });
+    save();
+    render();
+  }
+
+  function deleteEntry(id){
+    entries = entries.filter(e => e.id !== id);
+    save();
+    render();
+  }
+
+  function clearAll(){
+    if(!confirm('Vuoi davvero svuotare tutto il diario?')) return;
+    entries = [];
+    save();
+    render();
+  }
+
+  function exportPDF(){
+    render(true);
+    window.print();
+  }
+
+  function updateDate(){
+    const now = new Date();
+    document.getElementById('date-today').textContent =
+      now.toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  }
+
+  function render(printOrder = false){
+    const today = dateKey(Date.now());
+    ['tanta','poca','stimolo','bruciore','cacca'].forEach(t => {
+      document.getElementById('count-'+t).textContent =
+        entries.filter(e => dateKey(e.ts)===today && e.type===t).length;
+    });
+
+    const container = document.getElementById('log');
+    if(!entries.length){
+      container.innerHTML = '<div class="empty">Nessuna registrazione ancora.<br>Premi un pulsante per iniziare.</div>';
+      return;
+    }
+
+    let html = '';
+    let lastKey = null;
+    const visibleEntries = printOrder
+      ? [...entries].sort((a, b) => a.ts - b.ts)
+      : entries;
+
+    for(let i = 0; i < visibleEntries.length; i++){
+      const e = visibleEntries[i];
+      const dk = dateKey(e.ts);
+      const candidatePrevious = printOrder ? visibleEntries[i - 1] : visibleEntries[i + 1];
+      const previous = candidatePrevious && dateKey(candidatePrevious.ts) === dk
+        ? candidatePrevious
+        : null;
+      if(dk !== lastKey){
+        html += '<div class="date-sep">' + fmtDateLabel(e.ts) + '</div>';
+        lastKey = dk;
+      }
+
+      const elapsed = previous ? fmtInterval(e.ts - previous.ts) : fmtInterval(null);
+      html += '<div class="entry">'
+        + '<span class="badge ' + BADGE[e.type] + '">' + LABELS[e.type] + '</span>'
+        + '<span class="entry-time">' + fmtTime(e.ts) + '</span>'
+        + '<span class="entry-ago">' + elapsed + '</span>'
+        + '<button class="entry-delete" onclick="deleteEntry(\'' + e.id + '\')" title="Elimina">&#215;</button>'
+        + '</div>';
+    }
+    container.innerHTML = html;
+  }
+
+  updateDate();
+  render();
+  setInterval(updateDate, 60000);
+  window.addEventListener('beforeprint', () => render(true));
+  window.addEventListener('afterprint', () => render());
+</script>
+
+
+</body></html>
